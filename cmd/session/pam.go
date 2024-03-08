@@ -62,6 +62,8 @@ import (
 
 const NOBODY_ID = 65534
 
+
+// Get the username from the PAM Handle
 func GetUser(pamh *C.pam_handle_t) (string, error) {
 	ret := C.get_user(pamh)
 	if ret != C.PAM_SUCCESS {
@@ -71,6 +73,8 @@ func GetUser(pamh *C.pam_handle_t) (string, error) {
 	return C.GoString(C.c_username), nil
 }
 
+// Return the UID and GID for the user who is opening a session. This is used
+// primarily to create directories with the correct permissions.
 func get_uid_and_gid(pamh *C.pam_handle_t) (int, int, error) {
 	ret := C.get_ids(pamh)
 	if ret != C.PAM_SUCCESS {
